@@ -1,5 +1,6 @@
 package com.epam.spring.core.loggers;
 
+import com.epam.spring.core.beans.Event;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

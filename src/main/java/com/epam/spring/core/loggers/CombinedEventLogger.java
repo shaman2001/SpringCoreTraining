@@ -1,5 +1,7 @@
 package com.epam.spring.core.loggers;
 
+import com.epam.spring.core.beans.Event;
+
 import java.util.List;
 
 public class CombinedEventLogger implements EventLogger {

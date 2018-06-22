@@ -2,6 +2,7 @@ package com.epam.spring.core.loggers;
 
 
 
+import com.epam.spring.core.beans.Event;
 import org.springframework.context.annotation.Lazy;
 
 import java.util.ArrayList;

@@ -1,7 +1,8 @@
-package com.epam.spring.core.loggers;
+package com.epam.spring.core.beans;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class Event {
     
@@ -13,12 +14,13 @@ public class Event {
     
     private DateFormat format;
     
-    public Event() {
-    }
+//    public Event() {
+//    }
     
     public Event(Date date, DateFormat format) {
         this.date = date;
         this.format = format;
+        this.id = new Random().nextInt(55);
     }
     
     public int getId() {
@@ -51,8 +53,8 @@ public class Event {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", msg='" + msg + '\'' +
                 ", date=" + format.format(date) +
+                ", msg='" + msg + '\'' +
                 '}';
     }
     

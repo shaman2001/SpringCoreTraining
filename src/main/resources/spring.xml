@@ -6,15 +6,17 @@
  		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <bean id="app" class="com.epam.spring.core.App">
-        <constructor-arg ref="client"/>
-        <constructor-arg ref="consoleLogger"/>
+        <constructor-arg index="0" ref="client"/>
+        <constructor-arg index="1" ref="eventLogger"/>
     </bean>
 
-    <bean id="client" class="com.epam.spring.core.beans.Client" >
-        <constructor-arg index="0" value = "1" type="java.lang.String"/>
-        <constructor-arg index="1" value = "Papa Smith" type="java.lang.String"/>
+    <bean id="client" class="com.epam.spring.core.beans.Client">
+        <constructor-arg index="0" value="1"/>
+        <constructor-arg index="1" value="Papa Smith"/>
     </bean>
 
-    <import resource="loggers.xml"/>
+    <bean id="eventLogger" class="com.epam.spring.core.loggers.ConsoleEventLogger"/>
+
+
 
 </beans>
