@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+ 		http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="consoleLogger" class="com.epam.spring.core.loggers.ConsoleEventLogger"/>
+
+    <bean id="fileLogger"
+      class="com.epam.spring.core.loggers.FileEventLogger"
+      init-method="init">
+      <constructor-arg index="0" value = "log.txt" type="java.lang.String"/>
+    </bean>
+
+    <bean id="cacheFileLogger"
+          class="com.epam.spring.core.loggers.CacheFileEventLogger"
+
+          parent="fileLogger">
+        <!--init-method="init"-->
+        <!--destroy-method="destroy"-->
+        <constructor-arg index="0" value = "log.txt" type="java.lang.String"/>
+        <constructor-arg index="1" value = "5" type="java.lang.Integer"/>
+    </bean>
+
+    <bean id="combinedLogger"
+          class="com.epam.spring.core.loggers.CombinedEventLogger">
+
+        <constructor-arg>
+            <list>
+                <ref bean="consoleLogger"/>
+                <ref bean="fileLogger"/>
+                <ref bean="cacheFileLogger"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="event" class="com.epam.spring.core.loggers.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
+        </constructor-arg>
+    </bean>
+
+</beans>
