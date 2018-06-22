@@ -15,11 +15,10 @@
 
     <bean id="cacheFileLogger"
           class="com.epam.spring.core.loggers.CacheFileEventLogger"
-
           parent="fileLogger"
           init-method="init"
           destroy-method="destroy">
-        <constructor-arg index="0" value = "log.txt" type="java.lang.String"/>
+        <!--<constructor-arg index="0" value = "log.txt" type="java.lang.String"/>-->
         <constructor-arg index="1" value = "5" type="java.lang.Integer"/>
     </bean>
 
@@ -29,7 +28,7 @@
         <constructor-arg>
             <list>
                 <ref bean="consoleLogger"/>
-                <ref bean="fileLogger"/>
+                <!--<ref bean="fileLogger"/>-->
                 <ref bean="cacheFileLogger"/>
             </list>
         </constructor-arg>

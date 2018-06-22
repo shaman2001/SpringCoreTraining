@@ -19,13 +19,13 @@ public class FileEventLogger implements EventLogger {
     
     public void init() {
         file = new File(filename);
-        if (file.canWrite()) throw new RuntimeException("the file does. not have write access");
+        if (file.exists() && !file.canWrite()) throw new RuntimeException("the file doesn't have write access");
         
     }
     
     public void logEvent(Event evt) {
         try {
-            FileUtils.writeStringToFile(file, evt.toString(), true);
+            FileUtils.writeStringToFile(file, evt.toString() + "\n", true);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

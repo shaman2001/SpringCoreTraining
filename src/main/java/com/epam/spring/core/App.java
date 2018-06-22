@@ -7,11 +7,9 @@ import com.epam.spring.core.loggers.*;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -22,54 +20,54 @@ public class App {
     
     private Client client;
     
-    private EventLogger eventLogger;
+    private EventLogger defaultLogger;
+    
+    private Map<EventType, EventLogger> loggerMap;
     
     private static ConfigurableApplicationContext ctx;
     
     
     public App() {
         this.client = new Client("1", "Mama Smith");
-        this.eventLogger = new ConsoleEventLogger();
+        this.defaultLogger = new ConsoleEventLogger();
+        loggerMap = new EnumMap<>(EventType.class);
     }
     
-    public App(Client client, EventLogger eventLogger) {
+    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggerMap) {
         this.client = client;
-        this.eventLogger = eventLogger;
+        this.defaultLogger = eventLogger;
+        this.loggerMap = new EnumMap<>(loggerMap);
     }
     
     public static void main(String[] args ) {
         ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
-//        App app = new App();
-//        app.eventLogger = new ConsoleEventLogger();
-//        app.client = new Client("1", "Papa Smith");
-        app.logEvent("Client 1 added");
-//        app.logEvent("Client " + app.client.getId() + " added", EventType.INFO);
-        app.logEvent("Client 2 added");
-        app.logEvent("Client 35 added");
+        app.logEvent("Client 1 added", EventType.ERROR);
+        app.logEvent("Client 2 added", EventType.INFO);
+        app.logEvent("Client 35 added", null);
         ctx.close();
     }
     
     public void logEvent(String msg, EventType type) {
-//        if (EventType.INFO.equals(type)) {
-//            eventLogger = ctx.getBean(ConsoleEventLogger.class);
-//        } else if (EventType.ERROR.equals(type)) {
-//            eventLogger = ctx.getBean(FileEventLogger.class);
-//        } else {
-//            eventLogger = ctx.getBean(CombinedEventLogger.class);
-//        }
-//        Event evt = ctx.getBean(Event.class);
-//        evt.setMsg(msg);
-//        eventLogger.logEvent(evt);
+        EventLogger logger;
+        if (type!=null) {
+            logger = loggerMap.get(type);
+        } else {
+            logger = defaultLogger;
+        }
+        Event evt = ctx.getBean(Event.class);
+        String message = msg.replaceAll(client.getId(), client.getFullName());
+        evt.setMsg(message);
+        logger.logEvent(evt);
         
     }
     
-    public void logEvent(String msg) {
-        Event evt = new Event(new Date(), new SimpleDateFormat("hh:mm:ss"));
-        String message = msg.replaceAll(client.getId(), client.getFullName());
-        evt.setMsg(message);
-        eventLogger.logEvent(evt);
-    }
+//    public void logEvent(String msg) {
+//        Event evt = new Event(new Date(), new SimpleDateFormat("hh:mm:ss"));
+//        String message = msg.replaceAll(client.getId(), client.getFullName());
+//        evt.setMsg(message);
+//        defaultLogger.logEvent(evt);
+//    }
     
     
     

@@ -14,7 +14,7 @@ public class CombinedEventLogger implements EventLogger {
     }
     
     public void logEvent(Event evt) {
-        loggerList.forEach(logger-> logger.logEvent(evt));
+        loggerList.forEach(logger -> logger.logEvent(evt));
     }
     
     
