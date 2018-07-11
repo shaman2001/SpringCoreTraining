@@ -3,22 +3,22 @@ package com.epam.spring.core;
 import com.epam.spring.core.beans.Client;
 import com.epam.spring.core.beans.Event;
 import com.epam.spring.core.beans.EventType;
-import com.epam.spring.core.loggers.*;
+import com.epam.spring.core.loggers.ConsoleEventLogger;
+import com.epam.spring.core.loggers.EventLogger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.EnumMap;
 import java.util.Map;
 
-
-/**
- * Hello world!
- *
- */
-public class App {
+@Component("appAnnotation")
+public class AppAnnotation {
     
     private Client client;
-    
     
     private EventLogger defaultLogger;
     
@@ -27,21 +27,21 @@ public class App {
     private static ConfigurableApplicationContext ctx;
     
     
-    public App() {
+    public AppAnnotation() {
         this.client = new Client("1", "Mama Smith");
         this.defaultLogger = new ConsoleEventLogger();
         loggerMap = new EnumMap<>(EventType.class);
     }
     
-    public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggerMap) {
+    public AppAnnotation(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggerMap) {
         this.client = client;
         this.defaultLogger = eventLogger;
         this.loggerMap = new EnumMap<>(loggerMap);
     }
     
     public static void main(String[] args ) {
-        ctx = new ClassPathXmlApplicationContext("spring.xml");
-        App app = (App) ctx.getBean("app");
+        ctx = new AnnotationConfigApplicationContext(AppConfig.class, LoggersConfig.class);
+        AppAnnotation app = ctx.getBean(AppAnnotation.class);
         app.logEvent("Client 1 added", EventType.ERROR);
         app.logEvent("Client 2 added", EventType.INFO);
         app.logEvent("Client 35 added", null);
@@ -62,12 +62,7 @@ public class App {
         
     }
     
-//    public void logEvent(String msg) {
-//        Event evt = new Event(new Date(), new SimpleDateFormat("hh:mm:ss"));
-//        String message = msg.replaceAll(client.getId(), client.getFullName());
-//        evt.setMsg(message);
-//        defaultLogger.logEvent(evt);
-//    }
+
     
     
     

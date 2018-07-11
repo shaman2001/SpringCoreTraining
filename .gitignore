@@ -1,4 +1,5 @@
-
+*.txt
 .gitignore
 .idea/
 target/
+*.iml

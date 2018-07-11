@@ -1,11 +1,20 @@
 package com.epam.spring.core.beans;
 
-public class Client {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("singleton")
+public class Client {
+    
+    @Value("${id}")
     private String id;
     
+    @Value("${name}")
     private String fullName;
     
+    @Value("${greeting}")
     private String greeting;
     
     public Client() {}

@@ -32,7 +32,7 @@
 
     <bean id="app" class="com.epam.spring.core.App">
         <constructor-arg index="0" ref="client"/>
-        <constructor-arg ref="cacheFileLogger"/>
+        <constructor-arg value="#{T(com.epam.spring.core.beans.Event).isDay() ? fileLogger : consoleLogger}"/>
         <constructor-arg ref="loggerMap"/>
 
     </bean>
